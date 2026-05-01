@@ -10,13 +10,19 @@
 # See /LICENSE for more information.
 #
 
-# Uncomment a feed source
-#sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
+# ==================== 添加 Lucky 和 HomeProxy ====================
 
-# Add a feed source
-echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+# Lucky（网络工具/测速等）
+git clone https://github.com/gdy666/luci-app-lucky.git package/luci-app-lucky
+# HomeProxy（Sing-box 内核代理，支持 Hysteria2 等）
+git clone https://github.com/immortalwrt/homeproxy.git package/homeproxy
 
-# Add ADGuardHome source
-git clone https://github.com/rufengsuixing/luci-app-adguardhome package/luci-app-adguardhome
-chmod -R 755 ./package/luci-app-adguardhome/*
+# 给权限
+chmod -R 755 ./package/luci-app-lucky/*
+chmod -R 755 ./package/homeproxy/*
+
+# ==================== 移除不需要的 ====================
+
+# （已移除 helloworld、passwall、ADGuardHome）
+
+echo "diy-part1.sh 执行完成：已添加 Lucky + HomeProxy，并移除 helloworld/passwall/ADGuardHome"
