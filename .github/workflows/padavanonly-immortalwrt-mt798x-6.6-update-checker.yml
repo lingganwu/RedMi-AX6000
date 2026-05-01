@@ -1,15 +1,6 @@
 #
 # https://github.com/P3TERX/Actions-OpenWrt
 #
-# File: .github/workflows/update-checker.yml
-# Description: Source code update checker
-#
-# Copyright (c) 2019-2024 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-
 name: padavanonly-immortalwrt-mt798x-6.6-update-checker
 
 env:
@@ -18,15 +9,13 @@ env:
 
 on:
   workflow_dispatch:
-#  schedule:
-#    - cron: 0 */18 * * *
+  schedule:
+    - cron: '0 */18 * * *'   # 每18小时自动检查一次上游更新
 
 jobs:
   check:
     runs-on: ubuntu-latest
-
     steps:
-
     - name: Get Commit Hash
       id: getHash
       run: |
@@ -35,7 +24,7 @@ jobs:
 
     - name: Compare Commit Hash
       id: cacheHash
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .commitHash
         key: commitHash_${{ steps.getHash.outputs.commitHash }}
@@ -47,13 +36,13 @@ jobs:
 
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
-      uses: peter-evans/repository-dispatch@v2
+      uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ github.token }}
         event-type: Source Code Update
 
-    - name: Delete workflow runs
+    - name: Delete old workflow runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
-        retain_days: 0
-        keep_minimum_runs: 2
+        retain_days: 7
+        keep_minimum_runs: 3
