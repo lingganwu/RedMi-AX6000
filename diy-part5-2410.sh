@@ -13,7 +13,7 @@
 # ==================== 基础优化 ====================
 
 # 修改默认 IP（可选，取消注释即可使用）
-# sed -i 's/192.168.1.1/192.168.8.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.8.1/g' package/base-files/files/bin/config_generate
 
 # 修改主机名（可选）
 sed -i 's/OpenWrt/Redmi-AX6000/g' package/base-files/files/bin/config_generate
