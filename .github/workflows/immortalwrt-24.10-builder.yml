@@ -2,6 +2,7 @@ name: immortalwrt-24.10-builder
 
 on:
   repository_dispatch:
+    types: [Update-24.10]
   workflow_dispatch:
 
 env:
