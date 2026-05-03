@@ -105,6 +105,7 @@ jobs:
         path: ${{ env.FIRMWARE }}
 
     - name: Generate release tag
+      id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")-${{ env.FIRMWARE_TAG }}" >> $GITHUB_OUTPUT
@@ -114,8 +115,10 @@ jobs:
       uses: softprops/action-gh-release@v2
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag || format('v{0}', github.run_number) }}
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        name: ImmortalWrt AX6000 ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+        overwrite: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
