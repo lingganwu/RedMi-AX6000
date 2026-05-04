@@ -47,7 +47,16 @@ for iface in $(uci show wireless | grep '=wifi-iface' | cut -d'.' -f2 | cut -d'=
 done
 uci commit wireless
 
-# 4. 重新加载网络和无线使配置立即生效
+# 4. 放行 Tailscale 通信端口 (41641)
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow-Tailscale-Port'
+uci set firewall.@rule[-1].src='*'
+uci set firewall.@rule[-1].dest_port='41641'
+uci set firewall.@rule[-1].proto='udp'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit firewall
+
+# 5. 重新加载网络和无线使配置立即生效
 /etc/init.d/network restart
 wifi reload
 
@@ -58,4 +67,4 @@ EOF
 # 给生成的脚本赋予可执行权限
 chmod +x package/base-files/files/etc/uci-defaults/99-custom-settings
 
-echo "diy-part2.sh 执行完成：已成功注入后台密码、宽带拨号和 WiFi 定制！"
+echo "diy-part2.sh 执行完成：已成功注入后台密码、宽带拨号、WiFi 定制以及 Tailscale 防火墙规则！"
