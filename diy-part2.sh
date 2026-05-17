@@ -11,7 +11,6 @@ sed -i 's/OpenWrt/Redmi-AX6000/g' package/base-files/files/bin/config_generate
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 
 # ==================== 注入你的私人定制配置 ====================
-# 原理：我们通过创建 99-custom-settings 脚本，让路由器在刷机后第一次开机时自动执行这些配置。
 mkdir -p package/base-files/files/etc/uci-defaults
 
 cat << "EOF" > package/base-files/files/etc/uci-defaults/99-custom-settings
@@ -26,8 +25,7 @@ uci set network.wan.username='637143646974'
 uci set network.wan.password='888888'
 uci commit network
 
-# 3. 设置 WiFi 名称、密码并默认开启（已优化 2.4G / 5G 分离，更稳定）
-# 启用两个无线射频
+# 3. 设置 WiFi 名称、密码并默认开启
 uci set wireless.radio0.disabled='0'
 uci set wireless.radio1.disabled='0'
 
@@ -41,12 +39,16 @@ uci set wireless.default_radio1.ssid='OpenWrt_5G'
 uci set wireless.default_radio1.encryption='psk2+ccmp'
 uci set wireless.default_radio1.key='19851129z'
 
-# 提交并立即生效
 uci commit wireless
-wifi reload
-echo "WiFi 配置完成：2.4G → OpenWrt_2.4G | 5G → OpenWrt_5G"
 
-# 4. 放行 Tailscale 通信端口 (41641)
+# 4. 强制设置中文界面 + 上海时区
+uci set luci.main.lang='zh_cn'
+uci set system.@system[0].timezone='CST-8'
+uci set system.@system[0].zonename='Asia/Shanghai'
+uci commit luci
+uci commit system
+
+# 5. 放行 Tailscale 通信端口 (41641)
 uci add firewall rule
 uci set firewall.@rule[-1].name='Allow-Tailscale-Port'
 uci set firewall.@rule[-1].src='*'
@@ -55,15 +57,14 @@ uci set firewall.@rule[-1].proto='udp'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit firewall
 
-# 5. 重新加载网络和无线使配置立即生效
+# 6. 重新加载网络和无线使配置立即生效
 /etc/init.d/network restart
 wifi reload
 
-# 退出代码必须为 0，这样系统执行完后会自动删除此脚本
 exit 0
 EOF
 
 # 给生成的脚本赋予可执行权限
 chmod +x package/base-files/files/etc/uci-defaults/99-custom-settings
 
-echo "diy-part2.sh 执行完成：已成功注入后台密码、宽带拨号、WiFi（2.4G/5G分离）、Tailscale 防火墙规则！"
+echo "diy-part2.sh 执行完成：已注入包含强制中文开关的定制配置！"
