@@ -20,7 +20,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       actions: write
@@ -81,6 +81,7 @@ jobs:
         find dl -size -1024c -exec rm -f {} \;
 
     - name: Compile the firmware
+      id: compile
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
@@ -106,14 +107,14 @@ jobs:
 
     - name: Generate release tag
       id: tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outcome == 'success' && !cancelled()
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")-${{ env.FIRMWARE_TAG }}" >> $GITHUB_OUTPUT
         touch release.txt
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v2
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outcome == 'success' && !cancelled()
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         name: ImmortalWrt AX6000 ${{ steps.tag.outputs.release_tag }}
