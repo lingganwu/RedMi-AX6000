@@ -1,10 +1,11 @@
 #!/bin/bash
 # diy-part2.sh: OpenWrt DIY script part 2 (After Update feeds)
 
-# 修改默认 IP、主机名、主题
+# 修改默认 IP、主机名
 sed -i 's/192.168.1.1/192.168.8.1/g' package/base-files/files/bin/config_generate
 sed -i 's/OpenWrt/Redmi-AX6000/g' package/base-files/files/bin/config_generate
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+# 主题：保留默认 Bootstrap 兜底，不再强制替换为 Argon；
+# Vantage 首次开机通过自带的 30_luci-theme-vantage 自动设为默认主题。
 
 # ==================== 注入你的私人定制配置 ====================
 mkdir -p package/base-files/files/etc/uci-defaults
