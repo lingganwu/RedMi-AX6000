@@ -4,7 +4,8 @@
 
 ## ✨ 核心特性
 
-- **双分支自动构建**：支持自动追踪 ImmortalWrt `24.10` 稳定分支与 `25.12` (master) 最新分支。
+- **三路自动构建**：`24.10` 稳定分支、`25.12` (master) 最新分支，以及闭源驱动版 `25.12-closed`（见下）。
+- **闭源驱动版（25.12-closed）**：源码换成 [chasey-dev/immortalwrt-mt798x-rebase](https://github.com/chasey-dev/immortalwrt-mt798x-rebase)（分支 25.12，ImmortalWrt + 联发科官方 MTK feeds，内核 6.12），用闭源 `mtwifi` 无线驱动 + 硬件 NAT（hnat/warp），WiFi 表现接近原厂；插件（HomeProxy / Lucky / Tailscale）和主题（Vantage + Bootstrap 兜底）与开源版一致。区别：WiFi 不走标准 `uci wireless`，刷完后在 LuCI → MTK WiFi 里改名称和密码；`flow_offloading` 默认关（硬件 NAT 接管）。只编 `xiaomi_redmi-router-ax6000-stock` 一个机型。
 - **定时检查更新**：内置 Update Checker 定时任务，每 18 小时自动比对官方源码，检测到更新后自动触发流水线编译。
 - **深度精简**：严格控制编译体积，剔除了多余的 Docker、虚拟机、NAS 存储类应用（Samba、qbittorrent）以及冗余的 VPN 和代理工具，把硬件性能全部留给网络转发与核心服务。
 - **核心插件矩阵**：
