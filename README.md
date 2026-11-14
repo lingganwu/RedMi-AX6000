@@ -19,13 +19,12 @@
 ## ✨ 核心特性
 
 - **科学上网**：集成 HomeProxy（mihomo 内核），支持订阅转换与规则分流，开箱即用。
-- **广告过滤**：内置 AdGuardHome，支持自定义规则。
-- **网络加速**：集成 SmartDNS、Turbo ACC 网络加速，支持 FullCone NAT，游戏与 P2P 体验更顺畅。
+- **FullCone NAT**：支持 FullCone NAT，游戏与 P2P 体验更顺畅。
 - **穿透与组网**：内置 Lucky 反向代理与 Tailscale 零信任异地组网。
 - **定制外观**：默认采用 `Vantage` 主题（`Bootstrap` 兜底），后台支持原生中文。
 - **深度精简**：剔除了 Docker、虚拟机、NAS 存储类应用（Samba、qbittorrent）以及冗余的 VPN 和代理工具。
 - **定时检查更新**：内置 Update Checker 定时任务，每 18 小时自动比对官方源码，检测到更新后自动触发流水线编译（闭源驱动版除外，需手动触发）。
-- **闭源驱动版（25.12-closed）**：基于 [chasey-dev/immortalwrt-mt798x-rebase](https://github.com/chasey-dev/immortalwrt-mt798x-rebase)（ImmortalWrt 25.12，内核 6.12），用 MTK 官方 `mtwifi` 闭源驱动 + `hnat`/`warp` 硬件加速；插件（HomeProxy / Lucky / Tailscale）与主题（Vantage）与开源版一致。WiFi 不走标准 `uci wireless`，刷完后在 LuCI → MTK WiFi 里配置。构建代码在独立分支 `closed-driver-25.12`（配置 `ax6000-closed.config`、脚本 `diy-part2-closed.sh`），与开源版完全分开，互不干扰。
+- **闭源驱动版（25.12-closed）**：基于 [chasey-dev/immortalwrt-mt798x-rebase](https://github.com/chasey-dev/immortalwrt-mt798x-rebase)（ImmortalWrt 25.12，内核 6.12），用 MTK 官方 `mtwifi` 闭源驱动 + `hnat`/`warp` 硬件加速，集成 Turbo ACC（MTK）；插件（HomeProxy / Lucky / Tailscale）与主题（Vantage）与开源版一致。WiFi 不走标准 `uci wireless`，刷完后在 LuCI → MTK WiFi 里配置。构建代码在独立分支 `closed-driver-25.12`（配置 `ax6000-closed.config`、脚本 `diy-part2-closed.sh`），与开源版完全分开，互不干扰。
 
 ## 📦 获取固件
 
