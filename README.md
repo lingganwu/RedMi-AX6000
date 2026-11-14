@@ -19,6 +19,7 @@
 ## ✨ 核心特性
 
 - **科学上网**：集成 HomeProxy（mihomo 内核），支持订阅转换与规则分流，开箱即用。
+- **广告过滤**：内置 AdGuardHome，支持自定义规则（已加入编译配置，自下个构建起内置）。
 - **FullCone NAT**：支持 FullCone NAT，游戏与 P2P 体验更顺畅。
 - **穿透与组网**：内置 Lucky 反向代理与 Tailscale 零信任异地组网。
 - **定制外观**：默认采用 `Vantage` 主题（`Bootstrap` 兜底），后台支持原生中文。
