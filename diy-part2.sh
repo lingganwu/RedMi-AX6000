@@ -1,10 +1,19 @@
 #!/bin/bash
 # diy-part2.sh: OpenWrt DIY script part 2 (After Update feeds)
 
-# 修改默认 IP、主机名、主题
+# 修改默认 IP、主机名
 sed -i 's/192.168.1.1/192.168.8.1/g' package/base-files/files/bin/config_generate
 sed -i 's/OpenWrt/Redmi-AX6000/g' package/base-files/files/bin/config_generate
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
+# 主题：保留默认 Bootstrap 兜底，不再强制替换为 Argon；
+# Vantage 首次开机通过自带的 30_luci-theme-vantage 自动设为默认主题。
+
+# firewall4 FullCone 补丁：25.12（master）的 firewall4 已升级到 2026-11-08，
+# 上游删掉了 config 里的 disable_ipv6 行，自带旧补丁第一块打不上导致编译失败；
+# 只有新版才用仓库里重做过的补丁替换，24.10 保持原样不动
+if grep -q "^PKG_SOURCE_DATE:=2026-11-08" package/network/config/firewall4/Makefile 2>/dev/null; then
+  cp "${GITHUB_WORKSPACE:-..}/patches/001-firewall4-add-support-for-fullcone-nat.patch" package/network/config/firewall4/patches/001-firewall4-add-support-for-fullcone-nat.patch
+  echo "已替换 firewall4 FullCone 补丁为适配新版（2026-11-08）的版本"
+fi
 
 # ==================== 注入你的私人定制配置 ====================
 mkdir -p package/base-files/files/etc/uci-defaults
