@@ -44,6 +44,19 @@
 2. 选择需要的构建（`immortalwrt-24.10-builder`、`immortalwrt-25.12-builder`、闭源驱动版 `immortalwrt-25.12-closed-builder` 或 110m 大分区版 `immortalwrt-25.12-closed-110m-builder`），点进最新一次成功的运行。
 3. 在页面底部 Artifacts 区域下载 `OpenWrt_firmware` 压缩包，解压后同样用其中的 `*-stock-squashfs-sysupgrade.bin`（110m 版是 `*-110m-squashfs-sysupgrade.bin`）刷机。
 
+### 刷入不死 uboot（还没有不死 uboot 时）
+
+本仓库的闭源版与 110m 版建议在 hanwckf 不死 uboot 下刷机。还没有刷过不死 uboot 的，按以下步骤操作（参考恩山教程帖）：
+
+1. 先用救砖工具回到官方系统，再进 telnet 解锁 SSH。
+2. SSH 里运行 `cat /proc/mtd`，确认 FIP 所在的分区号（官方固件一般在分区 5，有的第三方固件在分区 4），一定要看好自己的。
+3. 从 [hanwckf/bl-mt798x Releases](https://github.com/hanwckf/bl-mt798x/releases) 下载不死 uboot 的 `.bin`，用 WinSCP 传到路由器的 `/tmp` 目录。
+4. 替换前建议先备份官方引导 FIP 分区：`dd if=/dev/mtd5 of=/tmp/FIP.bin`（分区号按第 2 步的实际结果改）。
+5. SSH 里写入 uboot：`mtd write /tmp/xxuboot.bin /dev/mtd5`（文件名与分区号按实际修改）。
+6. 写入后 SSH 无报错提示，等 5 秒直接拔电；电脑网卡 IPv4 固定为 `192.168.31.X`（X 为 2–254 任意数字）。
+7. 断电状态下顶住 reset 孔再插电，约 15 秒后松手（第一版不死 BOOT 无 LED 灯提示）。
+8. 用非 IE 的浏览器打开 `192.168.31.1`，即可进入 uboot 的 WebUI 界面，在里面选分区布局并刷入固件（具体刷机方法见上文）。
+
 > ⚠️ 闭源驱动版首次开机 WiFi 名为 `ImmortalWrt-2.4G` / `ImmortalWrt-5G`，无密码，请刷完后尽快在 LuCI → MTK WiFi 里改名并设置密码；换版本刷机时建议不要勾选“保留配置”，干净刷入。
 
 ### 🔐 默认登录信息
@@ -78,6 +91,8 @@
 - [ImmortalWrt](https://github.com/immortalwrt/immortalwrt) - 提供优秀的路由器固件源码
 - [P3TERX](https://github.com/P3TERX/Actions-OpenWrt) - 提供 Actions 云编译模板
 - [chasey-dev/immortalwrt-mt798x-rebase](https://github.com/chasey-dev/immortalwrt-mt798x-rebase) - 闭源驱动版的上游源码（MTK mtwifi 驱动）
+- [hanwckf/immortalwrt-mt798x](https://github.com/hanwckf/immortalwrt-mt798x) - 闭源驱动版的上游源码之一
+- [hanwckf/bl-mt798x](https://github.com/hanwckf/bl-mt798x) - 不死 uboot，支持多分区布局
 - [luci-theme-vantage](https://github.com/anothaDev/luci-theme-vantage) - 默认主题 Vantage
 
 ## 📄 开源协议
