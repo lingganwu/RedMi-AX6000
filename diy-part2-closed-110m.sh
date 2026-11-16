@@ -37,7 +37,7 @@ cat << "EOF" > package/base-files/files/etc/uci-defaults/99-custom-settings
 #!/bin/sh
 
 # 1. 设置后台登录密码 (851129)
-echo -e "851129\n851129" | passwd root
+echo -e "password\npassword" | passwd root
 
 # 2. 设置 WAN 口为 PPPoE 拨号
 uci set network.wan.proto='pppoe'
