@@ -31,6 +31,19 @@
 
 ## 📦 获取固件
 
+### 固件对照表：选哪个、uboot 里选哪个布局
+
+| 固件 | 内核 | 分区布局 | uboot 里选 | 怎么选 |
+| --- | --- | --- | --- | --- |
+| 24.10 | 6.6 | 原厂分区（内核 30MB + 系统 80MB） | `default` | 开源驱动，旧版分支 |
+| 25.12 | 6.18 | 原厂分区（内核 30MB + 系统 80MB） | `default` | 开源驱动，新版分支，内核更新 |
+| 25.12-closed | 6.12 | 原厂分区（内核 30MB + 系统 80MB） | `default` | MTK 闭源驱动 + 硬件加速，WiFi 在 LuCI → MTK WiFi 里配 |
+| 25.12-closed-110m | 6.12 | 大分区（单个 110MB ubi） | `immortalwrt-110m` | 与闭源版完全相同，系统空间多约 30MB；须 hanwckf uboot 并先切到 110m 布局 |
+
+- 布局不同不能互刷：`default` 布局只能刷原厂分区版，`immortalwrt-110m` 布局只能刷 110m 版；换布局必须在 uboot 里切布局并在 uboot 里刷固件，不能在跑着的系统里刷。
+- uboot 里刷固件支持 sysupgrade 或 factory 两种格式；原厂分区版首次刷入用 `*-stock-squashfs-factory.bin`，升级用 `*-stock-squashfs-sysupgrade.bin`；110m 版在 uboot 里刷 `*-110m-squashfs-sysupgrade.bin`。
+- 带 `ubootmod` 字样的固件两种布局都不支持，不要刷。
+
 ### 方式一：从 Releases 下载（推荐）
 
 1. 进入本仓库的 [Releases](https://github.com/lingganwu/RedMi-AX6000/releases) 页面。
