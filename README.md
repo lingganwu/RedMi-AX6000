@@ -46,7 +46,7 @@
 
 ### 刷入不死 uboot（还没有不死 uboot 时）
 
-本仓库的闭源版与 110m 版建议在 [hanwckf 不死 uboot](https://github.com/hanwckf/bl-mt798x) 下刷机。还没有刷过不死 uboot 的，按以下步骤操作（参考恩山教程帖）：
+本仓库的闭源版与 110m 版建议在 hanwckf 不死 uboot 下刷机。还没有刷过不死 uboot 的，按以下步骤操作（参考恩山教程帖）：
 
 1. 先用救砖工具回到官方系统，再进 telnet 解锁 SSH。
 2. SSH 里运行 `cat /proc/mtd`，确认 FIP 所在的分区号（官方固件一般在分区 5，有的第三方固件在分区 4），一定要看好自己的。
