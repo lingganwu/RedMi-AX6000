@@ -21,13 +21,13 @@ mkdir -p package/base-files/files/etc/uci-defaults
 cat << "EOF" > package/base-files/files/etc/uci-defaults/99-custom-settings
 #!/bin/sh
 
-# 1. 设置后台登录密码 (851129)
+# 1. 设置后台登录密码 (password)
 echo -e "password\npassword" | passwd root
 
-# 2. 设置 WAN 口为 PPPoE 拨号
-uci set network.wan.proto='pppoe'
-uci set network.wan.username='637143646974'
-uci set network.wan.password='888888'
+# 2. 设置 WAN 口为 DHCP 客户端
+uci set network.wan.proto='dhcp'
+uci delete network.wan.username
+uci delete network.wan.password
 uci commit network
 
 # 3. 设置 WiFi 名称、密码并开启 (2.4G / 5G 分离)
