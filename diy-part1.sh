@@ -5,7 +5,9 @@
 git clone https://github.com/gdy666/luci-app-lucky.git package/luci-app-lucky
 # 添加 Tailscale Community 源码仓库
 echo 'src-git tailscale_community https://github.com/Tokisaki-Galaxy/luci-app-tailscale-community' >> feeds.conf.default
+# 添加 Vantage 主题 + 仪表盘源码仓库（官方推荐 src-git feed 方式）
+echo 'src-git vantage https://github.com/anothaDev/luci-theme-vantage.git' >> feeds.conf.default
 # 给权限
 chmod -R 755 ./package/luci-app-lucky/*
 
-echo "diy-part1.sh 执行完成：已添加 Lucky。"
+echo "diy-part1.sh 执行完成：已添加 Lucky、Tailscale、Vantage。"
